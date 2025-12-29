@@ -8,12 +8,13 @@ import {
 
 // 🔥 CONFIG REAL DE FIREBASE (NO PLACEHOLDERS)
 const firebaseConfig = {
-  apiKey: "PEGA_AQUI_TU_API_KEY_REAL",
+  apiKey: "AIzaSyDg0pyezfYZJrC7Ed81y4qQQqE...",
+appId: "1:387509589760:web:423651xxxxxx"
   authDomain: "liga-nogales-f3da8.firebaseapp.com",
   projectId: "liga-nogales-f3da8",
   storageBucket: "liga-nogales-f3da8.appspot.com",
   messagingSenderId: "387509589760",
-  appId: "PEGA_AQUI_TU_APP_ID_REAL"
+  
 };
 
 const app = initializeApp(firebaseConfig);
