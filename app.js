@@ -93,6 +93,7 @@ window.crearTorneo = async function () {
 };
 // 🏃‍♂️ CREAR EQUIPO
 window.crearEquipo = async function () {
+  console.log("crearEquipo ejecutando");
   const nombre = document.getElementById("eq_nombre").value;
   const grupo = document.getElementById("eq_grupo").value;
   const roster = document
