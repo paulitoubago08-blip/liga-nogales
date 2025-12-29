@@ -8,15 +8,14 @@ import {
 
 // 🔥 CONFIG REAL DE FIREBASE
 const firebaseConfig = {
-  apiKey: "TU_API_KEY_REAL",
+  apiKey: "AIzaSyD3p6FuP5cUKrKcl-b2dmdxsVe7U7Ts6ZE",
   authDomain: "liga-nogales-f3da8.firebaseapp.com",
   projectId: "liga-nogales-f3da8",
   storageBucket: "liga-nogales-f3da8.appspot.com",
   messagingSenderId: "387509589760",
-  appId: "TU_APP_ID_REAL"
+  appId: "1:686651350788:web:3c651a88b9e67b09463a51"
 };
 
-// 👇 ESTO VA JUSTO ABAJO
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
