@@ -123,14 +123,14 @@ window.crearEquipo = async function () {
       pts:0,
       creado: serverTimestamp()
     });
+    cargarEquipos();
+    cargarTabla();
+    
 
     // limpiar campos
     document.getElementById("eq_nombre").value = "";
     document.getElementById("eq_grupo").value = "";
     document.getElementById("eq_roster").value = "";
-
-    // 👇 CLAVE
-    cargarEquipos();
 
   } catch (error) {
     alert("❌ Error al crear equipo");
