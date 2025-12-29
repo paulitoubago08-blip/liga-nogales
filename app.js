@@ -91,3 +91,43 @@ window.crearTorneo = async function () {
     alert("Error al crear torneo: " + error.message);
   }
 };
+// 🏃‍♂️ CREAR EQUIPO
+window.crearEquipo = async function () {
+  const nombre = document.getElementById("eq_nombre").value;
+  const grupo = document.getElementById("eq_grupo").value;
+  const roster = document
+    .getElementById("eq_roster")
+    .value
+    .split("\n")
+    .filter(j => j.trim() !== "");
+
+  if (!nombre) {
+    alert("Falta el nombre del equipo");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "equipos"), {
+      nombre,
+      grupo,
+      jugadores: roster,
+      pj: 0,
+      gf: 0,
+      gc: 0,
+      dif: 0,
+      pts: 0,
+      creado: serverTimestamp()
+    });
+
+    alert("✅ Equipo agregado");
+
+    // limpiar campos
+    document.getElementById("eq_nombre").value = "";
+    document.getElementById("eq_grupo").value = "";
+    document.getElementById("eq_roster").value = "";
+
+  } catch (error) {
+    alert("❌ Error al crear equipo");
+    console.error(error);
+  }
+};
