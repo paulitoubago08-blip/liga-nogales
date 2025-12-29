@@ -21,9 +21,9 @@ import {
 const firebaseConfig = {
   apiKey: "AIzaSyD3p6FuP5cUKrKcl-b2dmdxsVe7U7Ts6ZE",
   authDomain: "liga-nogales-f3da8.firebaseapp.com",
-  projectId: "liga-nogales-f3da8",
-  storageBucket: "liga-nogales-f3da8.appspot.com",
-  messagingSenderId: "387509589760",
+  projectId: "liga-nogales",
+  storageBucket: "liga-nogales.firebasestorage.app",
+  messagingSenderId: "686651350788",
   appId: "1:686651350788:web:3c651a88b9e67b09463a51"
 };
 
