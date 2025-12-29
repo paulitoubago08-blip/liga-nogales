@@ -185,3 +185,59 @@ async function cargarTabla() {
     tabla.appendChild(tr);
   });
 }
+window.registrarPartido = async function () {
+  const localId = document.getElementById("p_local").value;
+  const visitanteId = document.getElementById("p_visitante").value;
+  const gLocal = parseInt(document.getElementById("g_local").value);
+  const gVisit = parseInt(document.getElementById("g_visitante").value);
+
+  if (!localId || !visitanteId || isNaN(gLocal) || isNaN(gVisit)) {
+    alert("Completa todos los datos");
+    return;
+  }
+
+  if (localId === visitanteId) {
+    alert("No puede jugar contra sí mismo");
+    return;
+  }
+
+  const refLocal = doc(db, "equipos", localId);
+  const refVisit = doc(db, "equipos", visitanteId);
+
+  const localSnap = await getDoc(refLocal);
+  const visitSnap = await getDoc(refVisit);
+
+  const local = localSnap.data();
+  const visit = visitSnap.data();
+
+  // puntos
+  let ptsLocal = 0;
+  let ptsVisit = 0;
+
+  if (gLocal > gVisit) ptsLocal = 3;
+  else if (gLocal < gVisit) ptsVisit = 3;
+  else {
+    ptsLocal = 1;
+    ptsVisit = 1;
+  }
+
+  await updateDoc(refLocal, {
+    pj: local.pj + 1,
+    gf: local.gf + gLocal,
+    gc: local.gc + gVisit,
+    dif: (local.gf + gLocal) - (local.gc + gVisit),
+    pts: local.pts + ptsLocal
+  });
+
+  await updateDoc(refVisit, {
+    pj: visit.pj + 1,
+    gf: visit.gf + gVisit,
+    gc: visit.gc + gLocal,
+    dif: (visit.gf + gVisit) - (visit.gc + gLocal),
+    pts: visit.pts + ptsVisit
+  });
+
+  cargarTabla();
+
+  alert("Partido registrado ✅");
+};
