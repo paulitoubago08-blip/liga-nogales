@@ -267,6 +267,37 @@ window.registrarPartido = async function () {
   });
 
   cargarTabla();
+  async function cargarSelectEquipos() {
+  if (!torneoActivoId) return;
+
+  const selectLocal = document.getElementById("p_local");
+  const selectVisit = document.getElementById("p_visitante");
+
+  selectLocal.innerHTML = `<option value="">Equipo local</option>`;
+  selectVisit.innerHTML = `<option value="">Equipo visitante</option>`;
+
+  const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId)
+  );
+
+  const snap = await getDocs(q);
+
+  snap.forEach(docu => {
+    const e = docu.data();
+
+    const opt1 = document.createElement("option");
+    opt1.value = docu.id;
+    opt1.textContent = e.nombre;
+
+    const opt2 = document.createElement("option");
+    opt2.value = docu.id;
+    opt2.textContent = e.nombre;
+
+    selectLocal.appendChild(opt1);
+    selectVisit.appendChild(opt2);
+  });
+}
 
   alert("Partido registrado ✅");
 };
