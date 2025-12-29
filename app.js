@@ -30,6 +30,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+// Torneo activo (global)
+let torneoActivoId = null;
 
 // LOGIN
 window.login = async function () {
@@ -62,6 +64,10 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 // 🏆 CREAR TORNEO
+if (!torneoActivoId) {
+  alert("Primero crea un torneo");
+  return;
+}
 window.crearTorneo = async function () {
   const nombre = document.getElementById("t_nombre").value;
   const deporte = document.getElementById("t_deporte").value;
@@ -74,13 +80,14 @@ window.crearTorneo = async function () {
   }
 
   try {
-    await addDoc(collection(db, "torneos"), {
+    const docRef = await addDoc(collection(db, "torneos"), {
       nombre: nombre,
       deporte: deporte,
       tipo: tipo,
       creado: serverTimestamp(),
       activo: true
     });
+    torneoActivoId = docRef.id; 
 
     document.getElementById("torneoActivo").innerText =
       "Torneo activo: " + nombre;
@@ -108,6 +115,7 @@ window.crearEquipo = async function () {
       nombre,
       grupo,
       roster,
+      torneoId: torneoActivoId,
       creado: serverTimestamp()
     });
 
@@ -132,7 +140,10 @@ async function cargarEquipos() {
   const lista = document.getElementById("listaEquipos");
   lista.innerHTML = "";
 
-  const q = query(collection(db, "equipos"));
+  const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId)
+    );
   const snap = await getDocs(q);
 
   snap.forEach(docu => {
