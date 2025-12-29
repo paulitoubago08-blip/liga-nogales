@@ -116,6 +116,11 @@ window.crearEquipo = async function () {
       grupo,
       roster,
       torneoId: torneoActivoId,
+      pj:0,
+      gf:0,
+      gc:0,
+      dif:0,
+      pts:0,
       creado: serverTimestamp()
     });
 
@@ -157,7 +162,7 @@ async function cargarEquipos() {
 // 📊 CARGAR TABLA DE POSICIONES
 // ===============================
 async function cargarTabla() {
-  const tabla = document.getElementById("tabla");
+  const tabla = document.getElementById("tablaPosiciones");
   tabla.innerHTML = "";
 
   const q = query(collection(db, "equipos"));
