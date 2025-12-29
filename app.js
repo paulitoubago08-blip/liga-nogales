@@ -61,3 +61,32 @@ onAuthStateChanged(auth, (user) => {
     appBox.classList.add("hidden");
   }
 });
+// 🏆 CREAR TORNEO
+window.crearTorneo = async function () {
+  const nombre = document.getElementById("t_nombre").value;
+  const deporte = document.getElementById("t_deporte").value;
+  const tipo = document.getElementById("t_tipo").value;
+
+  if (!nombre || !tipo) {
+    alert("Completa todos los campos");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "torneos"), {
+      nombre,
+      deporte,
+      tipo,
+      creado: serverTimestamp(),
+      activo: true
+    });
+
+    document.getElementById("torneoActivo").innerText =
+      "Torneo activo: " + nombre;
+
+    alert("Torneo creado correctamente");
+  } catch (e) {
+    alert("Error al crear torneo");
+    console.error(e);
+  }
+};
