@@ -91,19 +91,15 @@ window.crearTorneo = async function () {
     alert("Error al crear torneo: " + error.message);
   }
 };
-// 🏃‍♂️ CREAR EQUIPO
+// CREAR EQUIPO
+// ================================
 window.crearEquipo = async function () {
-  console.log("crearEquipo ejecutando");
   const nombre = document.getElementById("eq_nombre").value;
   const grupo = document.getElementById("eq_grupo").value;
-  const roster = document
-    .getElementById("eq_roster")
-    .value
-    .split("\n")
-    .filter(j => j.trim() !== "");
+  const roster = document.getElementById("eq_roster").value;
 
-  if (!nombre) {
-    alert("Falta el nombre del equipo");
+  if (!nombre || !grupo) {
+    alert("Completa nombre y grupo");
     return;
   }
 
@@ -111,28 +107,27 @@ window.crearEquipo = async function () {
     await addDoc(collection(db, "equipos"), {
       nombre,
       grupo,
-      jugadores: roster,
-      pj: 0,
-      gf: 0,
-      gc: 0,
-      dif: 0,
-      pts: 0,
+      roster,
       creado: serverTimestamp()
     });
-    await cargarEquipos();
-
-    alert("✅ Equipo agregado");
 
     // limpiar campos
     document.getElementById("eq_nombre").value = "";
     document.getElementById("eq_grupo").value = "";
     document.getElementById("eq_roster").value = "";
 
+    // 👇 CLAVE
+    cargarEquipos();
+
   } catch (error) {
     alert("❌ Error al crear equipo");
     console.error(error);
   }
 };
+
+// ================================
+// CARGAR EQUIPOS EN PANTALLA
+// ================================
 async function cargarEquipos() {
   const lista = document.getElementById("listaEquipos");
   lista.innerHTML = "";
@@ -147,5 +142,3 @@ async function cargarEquipos() {
     lista.appendChild(li);
   });
 }
-cargarEquipos();
-};
