@@ -142,3 +142,30 @@ async function cargarEquipos() {
     lista.appendChild(li);
   });
 }
+// ===============================
+// 📊 CARGAR TABLA DE POSICIONES
+// ===============================
+async function cargarTabla() {
+  const tabla = document.getElementById("tabla");
+  tabla.innerHTML = "";
+
+  const q = query(collection(db, "equipos"));
+  const snap = await getDocs(q);
+
+  snap.forEach(docu => {
+    const e = docu.data();
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${e.nombre}</td>
+      <td>${e.pj || 0}</td>
+      <td>${e.gf || 0}</td>
+      <td>${e.gc || 0}</td>
+      <td>${(e.gf || 0) - (e.gc || 0)}</td>
+      <td>${e.pts || 0}</td>
+    `;
+
+    tabla.appendChild(tr);
+  });
+}
