@@ -119,6 +119,7 @@ window.crearEquipo = async function () {
       pts: 0,
       creado: serverTimestamp()
     });
+    await cargarEquipos();
 
     alert("✅ Equipo agregado");
 
@@ -132,3 +133,18 @@ window.crearEquipo = async function () {
     console.error(error);
   }
 };
+async function cargarEquipos() {
+  const lista = document.getElementById("listaEquipos");
+  lista.innerHTML = "";
+
+  const q = query(collection(db, "equipos"));
+  const snap = await getDocs(q);
+
+  snap.forEach(docu => {
+    const e = docu.data();
+    const li = document.createElement("li");
+    li.textContent = `${e.nombre} (Grupo ${e.grupo})`;
+    lista.appendChild(li);
+  });
+}
+cargarEquipos();
