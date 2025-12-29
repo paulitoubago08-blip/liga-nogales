@@ -66,6 +66,7 @@ window.crearTorneo = async function () {
   const nombre = document.getElementById("t_nombre").value;
   const deporte = document.getElementById("t_deporte").value;
   const tipo = document.getElementById("t_tipo").value;
+  console.log ("Datos:", nombre, deporte, tipo);
 
   if (!nombre || !tipo) {
     alert("Completa todos los campos");
@@ -84,9 +85,9 @@ window.crearTorneo = async function () {
     document.getElementById("torneoActivo").innerText =
       "Torneo activo: " + nombre;
 
-    alert("✅ Torneo creado correctamente");
+    alert("Torneo creado correctamente");
   } catch (error) {
-    console.error(error);
-    alert("❌ Error al crear torneo");
+    console.error("ERROR FIRESTORE:", error);
+    alert("Error al crear torneo: " + error.message);
   }
 };
