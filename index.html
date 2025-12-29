@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>Liga Nogales</title>
 
   <!-- ICONOS -->
@@ -42,7 +41,6 @@
 
   <section class="card">
     <h2>Crear torneo</h2>
-
     <input id="t_nombre" placeholder="Nombre del torneo">
 
     <select id="t_deporte">
@@ -61,13 +59,10 @@
 
   <section class="card">
     <h2>Equipos</h2>
-
     <input id="eq_nombre" placeholder="Nombre del equipo">
     <input id="eq_grupo" placeholder="Grupo (A, B, etc)">
     <textarea id="eq_roster" placeholder="Jugadores (uno por línea)"></textarea>
-
     <button onclick="crearEquipo()">Agregar equipo</button>
-
     <ul id="listaEquipos"></ul>
   </section>
 
@@ -93,32 +88,10 @@
     <div id="campeon">🏆 Campeón: pendiente</div>
     <div id="goleador">⚽ Goleador: pendiente</div>
   </section>
-<section class="card">
-  <h2>Tabla de posiciones</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Equipo</th>
-        <th>PJ</th>
-        <th>GF</th>
-        <th>GC</th>
-        <th>DIF</th>
-        <th>PTS</th>
-      </tr>
-    </thead>
-    <tbody id="tabla"></tbody>
-  </table>
-</section>
 
-<section class="card">
-  <h2>Estadísticas</h2>
-  <div id="campeon">🏆 Campeón: pendiente</div>
-  <div id="goleador">⚽ Goleador: pendiente</div>
-</section>
-
-<section class="card">
-  <button class="danger" onclick="logout()">Cerrar sesión</button>
-</section>
+  <section class="card">
+    <button class="danger" onclick="logout()">Cerrar sesión</button>
+  </section>
 
 </main>
 
