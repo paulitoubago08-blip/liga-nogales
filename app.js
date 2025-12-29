@@ -125,6 +125,7 @@ window.crearEquipo = async function () {
     });
     cargarEquipos();
     cargarTabla();
+    cargarSelectEquipos();
     
 
     // limpiar campos
