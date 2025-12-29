@@ -1,18 +1,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
+// 🔥 CONFIG REAL DE FIREBASE (NO PLACEHOLDERS)
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
+  apiKey: "PEGA_AQUI_TU_API_KEY_REAL",
   authDomain: "liga-nogales-f3da8.firebaseapp.com",
   projectId: "liga-nogales-f3da8",
   storageBucket: "liga-nogales-f3da8.appspot.com",
   messagingSenderId: "387509589760",
-  appId: "TU_APP_ID"
+  appId: "PEGA_AQUI_TU_APP_ID_REAL"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -26,7 +27,8 @@ window.login = async function () {
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    alert("Error al iniciar sesión");
+    alert(error.message); // 🔥 ahora sí verás el error real
+    console.error(error);
   }
 };
 
