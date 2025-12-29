@@ -1,44 +1,50 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { 
   getAuth, 
   signInWithEmailAndPassword, 
-  onAuthStateChanged,
-  signOut 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  signOut, 
+  onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "TU_API_KEY",
-  authDomain: "liga-nogales.firebaseapp.com",
-  projectId: "liga-nogales",
+  authDomain: "liga-nogales-f3da8.firebaseapp.com",
+  projectId: "liga-nogales-f3da8",
+  storageBucket: "liga-nogales-f3da8.appspot.com",
+  messagingSenderId: "387509589760",
+  appId: "TU_APP_ID"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const loginBox = document.getElementById("loginBox");
-const appBox = document.getElementById("app");
-
-window.login = async () => {
+// LOGIN
+window.login = async function () {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-  } catch (e) {
+  } catch (error) {
     alert("Error al iniciar sesión");
   }
 };
 
-window.logout = async () => {
+// LOGOUT
+window.logout = async function () {
   await signOut(auth);
 };
 
-onAuthStateChanged(auth, user => {
+// CONTROL DE SESIÓN
+onAuthStateChanged(auth, (user) => {
+  const loginBox = document.getElementById("loginBox");
+  const appBox = document.getElementById("app");
+
   if (user) {
-    loginBox.style.display = "none";
+    loginBox.classList.add("hidden");
     appBox.classList.remove("hidden");
   } else {
-    loginBox.style.display = "block";
+    loginBox.classList.remove("hidden");
     appBox.classList.add("hidden");
   }
 });
