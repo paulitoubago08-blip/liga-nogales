@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Liga Nogales</title>
+
+  <!-- ICONOS -->
+  <link rel="icon" href="icon.PNG" />
+  <link rel="apple-touch-icon" href="icon.PNG" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<header class="header">
+  <img src="logo.PNG" class="logo">
+  <h1>Liga Nogales</h1>
+</header>
+
+<div class="public-msg">
+  📊 Resultados, tabla y liguilla en tiempo real
+</div>
+
+<!-- LOGIN -->
+<section id="loginBox" class="card">
+  <h2>Acceso administrador</h2>
+  <input id="email" type="email" placeholder="Correo">
+  <input id="password" type="password" placeholder="Contraseña">
+  <button onclick="login()">Entrar</button>
+</section>
+
+<!-- APP -->
+<main id="app" class="hidden">
+
+  <section class="card success">
+    <strong id="torneoActivo">Torneo activo: ninguno</strong>
+  </section>
+
+  <section class="card">
+    <h2>Crear torneo</h2>
+
+    <input id="t_nombre" placeholder="Nombre del torneo">
+
+    <select id="t_deporte">
+      <option value="futbol">Fútbol</option>
+      <option value="basquet">Básquet</option>
+    </select>
+
+    <select id="t_tipo">
+      <option value="">Tipo de torneo</option>
+      <option value="general">Tabla general</option>
+      <option value="grupos">Fase de grupos</option>
+    </select>
+
+    <button onclick="crearTorneo()">Crear torneo</button>
+  </section>
+
+  <section class="card">
+    <h2>Equipos</h2>
+
+    <input id="eq_nombre" placeholder="Nombre del equipo">
+    <input id="eq_grupo" placeholder="Grupo (A, B, etc)">
+    <textarea id="eq_roster" placeholder="Jugadores (uno por línea)"></textarea>
+
+    <button onclick="crearEquipo()">Agregar equipo</button>
+
+    <ul id="listaEquipos"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Tabla de posiciones</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Equipo</th>
+          <th>PJ</th>
+          <th>GF</th>
+          <th>GC</th>
+          <th>DIF</th>
+          <th>PTS</th>
+        </tr>
+      </thead>
+      <tbody id="tabla"></tbody>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>Estadísticas</h2>
+    <div id="campeon">🏆 Campeón: pendiente</div>
+    <div id="goleador">⚽ Goleador: pendiente</div>
+  </section>
+
+  <section class="card">
+    <button class="danger" onclick="logout()">Cerrar sesión</button>
+  </section>
+
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
