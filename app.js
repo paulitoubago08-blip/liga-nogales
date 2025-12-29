@@ -185,6 +185,35 @@ async function cargarTabla() {
     tabla.appendChild(tr);
   });
 }
+async function cargarTablaPosiciones() {
+  if (!torneoActivoId) return;
+
+  const tbody = document.getElementById("tablaPosiciones");
+  tbody.innerHTML = "";
+
+  const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId)
+  );
+
+  const snap = await getDocs(q);
+
+  snap.forEach(docu => {
+    const e = docu.data();
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${e.nombre}</td>
+      <td>${e.pj || 0}</td>
+      <td>${e.gf || 0}</td>
+      <td>${e.gc || 0}</td>
+      <td>${(e.gf || 0) - (e.gc || 0)}</td>
+      <td>${e.pts || 0}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
 window.registrarPartido = async function () {
   const localId = document.getElementById("p_local").value;
   const visitanteId = document.getElementById("p_visitante").value;
