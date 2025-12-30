@@ -105,7 +105,44 @@ async function cargarEquipos() {
 // ================================
 // 📊 TABLA DE POSICIONES (ORDENADA)
 // ================================
+async function cargarTablaPosiciones() {
+  const tabla = document.getElementById("tablaPosiciones");
+  tabla.innerHTML = "";
 
+  const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId),
+    orderBy("pts", "desc"),
+    orderBy("dif", "desc"),
+    orderBy("gf", "desc")
+  );
+
+  const snap = await getDocs(q);
+
+  let posicion = 1; // 👈 contador de posiciones
+
+  snap.forEach(docu => {
+    const e = docu.data();
+    const tr = document.createElement("tr");
+
+    // 🎨 colores opcionales
+    if (posicion === 1) tr.style.background = "#d4edda"; // líder
+    if (posicion >= snap.size - 1) tr.style.background = "#f8d7da"; // últimos
+
+    tr.innerHTML = `
+      <td><strong>${posicion}</strong></td>
+      <td>${e.nombre}</td>
+      <td>${e.pj || 0}</td>
+      <td>${e.gf || 0}</td>
+      <td>${e.gc || 0}</td>
+      <td>${(e.gf || 0) - (e.gc || 0)}</td>
+      <td><strong>${e.pts || 0}</strong></td>
+    `;
+
+    tabla.appendChild(tr);
+    posicion++;
+  });
+}
 // ================================
 // ⚽ REGISTRAR PARTIDO
 // ================================
