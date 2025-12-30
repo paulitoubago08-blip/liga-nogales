@@ -53,7 +53,7 @@ window.crearEquipo = async function () {
       creado: serverTimestamp()
     });
 
-    alert("✅ Equipo agregado correctamente");
+    alert("Equipo agregado correctamente");
 
     // limpiar campos ✅ AHORA BIEN
     document.getElementById("eq_nombre").value = "";
@@ -66,7 +66,7 @@ window.crearEquipo = async function () {
 
   } catch (error) {
     console.error(error);
-    alert("❌ Error al crear equipo");
+    alert("Error al crear equipo");
   }
 };
 
