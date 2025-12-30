@@ -105,67 +105,6 @@ async function cargarEquipos() {
 // ================================
 // 📊 TABLA DE POSICIONES (ORDENADA)
 // ================================
-async function cargarTablaPosiciones() {
-  const tabla = document.getElementById("tablaPosiciones");
-  tabla.innerHTML = "";
-
-  const q = query(
-    collection(db, "equipos"),
-    where("torneoId", "==", torneoActivoId),
-    orderBy("pts", "desc"),
-    orderBy("dif", "desc"),
-    orderBy("gf", "desc")
-  );
-
-  const snap = await getDocs(q);
-
-  snap.forEach(docu => {
-    const e = docu.data();
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${e.nombre}</td>
-      <td>${e.pj}</td>
-      <td>${e.gf}</td>
-      <td>${e.gc}</td>
-      <td>${e.dif}</td>
-      <td>${e.pts}</td>
-    `;
-
-    tabla.appendChild(tr);
-  });
-}
-
-// ================================
-// 🔽 SELECT DE EQUIPOS
-// ================================
-async function cargarSelectEquipos() {
-  const selectLocal = document.getElementById("p_local");
-  const selectVisit = document.getElementById("p_visitante");
-
-  selectLocal.innerHTML = `<option value="">Equipo local</option>`;
-  selectVisit.innerHTML = `<option value="">Equipo visitante</option>`;
-
-  const q = query(
-    collection(db, "equipos"),
-    where("torneoId", "==", torneoActivoId)
-  );
-
-  const snap = await getDocs(q);
-
-  snap.forEach(docu => {
-    const e = docu.data();
-
-    const opt1 = document.createElement("option");
-    opt1.value = docu.id;
-    opt1.textContent = e.nombre;
-
-    const opt2 = opt1.cloneNode(true);
-
-    selectLocal.appendChild(opt1);
-    selectVisit.appendChild(opt2);
-  });
-}
 
 // ================================
 // ⚽ REGISTRAR PARTIDO
