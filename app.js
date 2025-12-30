@@ -62,7 +62,7 @@ window.crearEquipo = async function () {
     document.getElementById("eq_roster").value = "";
 
     cargarEquipos();
-    cargarTabla();
+    cargarTablaPosiciones();
     cargarSelectEquipos();
 
   } catch (error) {
@@ -96,7 +96,7 @@ async function cargarEquipos() {
 // ===============================
 // 📊 CARGAR TABLA DE POSICIONES
 // ===============================
-async function cargarTabla() {
+async function cargarTablaPosiciones() {
   const tabla = document.getElementById("tablaPosiciones");
   tabla.innerHTML = "";
    const q = query(
@@ -124,34 +124,7 @@ async function cargarTabla() {
     tabla.appendChild(tr);
   });
 }
-async function cargarTablaPosiciones() {
-  
-  const tbody = document.getElementById("tablaPosiciones");
-  tbody.innerHTML = "";
 
-  const q = query(
-    collection(db, "equipos"),
-    where("torneoId", "==", torneoActivoId)
-  );
-
-  const snap = await getDocs(q);
-
-  snap.forEach(docu => {
-    const e = docu.data();
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${e.nombre}</td>
-      <td>${e.pj || 0}</td>
-      <td>${e.gf || 0}</td>
-      <td>${e.gc || 0}</td>
-      <td>${(e.gf || 0) - (e.gc || 0)}</td>
-      <td>${e.pts || 0}</td>
-    `;
-
-    tbody.appendChild(tr);
-  });
-}
 async function cargarSelectEquipos () {
   if (!torneoActivoId) return;
 
@@ -236,7 +209,7 @@ window.registrarPartido = async function () {
     pts: visit.pts + ptsVisit
   });
 
-  cargarTabla();
+  cargarTablaPosiciones();
  
   alert("Partido registrado ✅");
 };
