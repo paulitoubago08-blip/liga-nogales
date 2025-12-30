@@ -30,36 +30,6 @@ document.getELementById("app").classList.remove("hidden");
 // TORNEO FIJO TEMPORAL (SIN LOGIN) 
 let torneoActivoId = "TORNEO_TEST"; 
 
-window.crearTorneo = async function () {
-  const nombre = document.getElementById("t_nombre").value;
-  const deporte = document.getElementById("t_deporte").value;
-  const tipo = document.getElementById("t_tipo").value;
-  console.log ("Datos:", nombre, deporte, tipo);
-
-  if (!nombre || !tipo) {
-    alert("Completa todos los campos");
-    return;
-  }
-
-  try {
-    const docRef = await addDoc(collection(db, "torneos"), {
-      nombre: nombre,
-      deporte: deporte,
-      tipo: tipo,
-      creado: serverTimestamp(),
-      activo: true
-    });
-    torneoActivoId = docRef.id; 
-
-    document.getElementById("torneoActivo").innerText =
-      "Torneo activo: " + nombre;
-
-    alert("Torneo creado correctamente");
-  } catch (error) {
-    console.error("ERROR FIRESTORE:", error);
-    alert("Error al crear torneo: " + error.message);
-  }
-};
 // CREAR EQUIPO
 // ================================
 window.crearEquipo = async function () {
