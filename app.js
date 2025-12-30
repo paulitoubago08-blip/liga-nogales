@@ -67,10 +67,10 @@ window.crearEquipo = async function () {
     document.getElementById("eq_nombre").value = "";
     document.getElementById("eq_grupo").value = "";
     document.getElementById("eq_roster").value = "";
-
-    cargarEquipos();
-    cargarTablaPosiciones();
-    cargarSelectEquipos();
+    
+    await cargarEquipos();
+    await cargarTablaPosiciones();
+    await cargarSelectEquipos();
 
     alert("Equipo agregado correctamente ✅");
 
@@ -229,6 +229,9 @@ window.registrarPartido = async function () {
 // ================================
 // ⏱️ CARGA INICIAL
 // ================================
-cargarEquipos();
-cargarTablaPosiciones();
-cargarSelectEquipos();
+documente.addEventListener("DOMContentLoaded", async () => {
+await cargarEquipos();
+await cargarTablaPosiciones();
+await cargarSelectEquipos();
+});
+  
