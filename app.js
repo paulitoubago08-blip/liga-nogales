@@ -68,9 +68,9 @@ window.crearEquipo = async function () {
     document.getElementById("eq_grupo").value = "";
     document.getElementById("eq_roster").value = "";
     
-    await cargarEquipos();
-    await cargarTablaPosiciones();
-    await cargarSelectEquipos();
+   cargarEquipos();
+  cargarTablaPosiciones();
+     cargarSelectEquipos();
 
     alert("Equipo agregado correctamente ✅");
 
