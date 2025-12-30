@@ -24,84 +24,70 @@
   📊 Resultados, tabla y liguilla en tiempo real
 </div>
 
-
 <!-- APP -->
-<main id="app" 
+<main id="app">
 
+  <!-- TORNEO -->
   <section class="card success">
-    <strong id="torneoActivo">Torneo activo: ninguno</strong>
+    <strong id="torneoActivo">Torneo activo: prueba</strong>
   </section>
-<!--
-  <section class="card">
-    <h2>Crear torneo</h2>
-    <input id="t_nombre" placeholder="Nombre del torneo">
 
-    <select id="t_deporte">
-      <option value="futbol">Fútbol</option>
-      <option value="basquet">Básquet</option>
-    </select>
-
-    <select id="t_tipo">
-      <option value="general">Tabla general</option>
-      <option value="grupos">Fase de grupos</option>
-    </select>
-
-    <button onclick="crearTorneo()">Crear torneo</button>
-  </section>
-  -->
-
+  <!-- EQUIPOS -->
   <section class="card">
     <h2>Equipos</h2>
+
     <input id="eq_nombre" placeholder="Nombre del equipo">
     <input id="eq_grupo" placeholder="Grupo (A, B, etc)">
     <textarea id="eq_roster" placeholder="Jugadores (uno por línea)"></textarea>
+
     <button onclick="crearEquipo()">Agregar equipo</button>
+
     <ul id="listaEquipos"></ul>
   </section>
 
+  <!-- TABLA -->
   <section class="card">
     <h2>Tabla de posiciones</h2>
+
     <table border="1" width="100%">
-  <thead>
-    <tr>
-      <th>Equipo</th>
-      <th>PJ</th>
-      <th>GF</th>
-      <th>GC</th>
-      <th>DIF</th>
-      <th>PTS</th>
-    </tr>
-  </thead>
-  <tbody id="tablaPosiciones"></tbody>
-</table>
-    <section class="card">
-  <h2>Registrar partido</h2>
-
-  <select id="p_local">
-    <option value="">Equipo local</option>
-  </select>
-
-  <input id="g_local" type="number" placeholder="Goles local">
-
-  <select id="p_visitante">
-    <option value="">Equipo visitante</option>
-  </select>
-
-  <input id="g_visitante" type="number" placeholder="Goles visitante">
-
-  <button onclick="registrarPartido()">Guardar partido</button>
-</section>
-    
+      <thead>
+        <tr>
+          <th>Equipo</th>
+          <th>PJ</th>
+          <th>GF</th>
+          <th>GC</th>
+          <th>DIF</th>
+          <th>PTS</th>
+        </tr>
+      </thead>
+      <tbody id="tablaPosiciones"></tbody>
+    </table>
   </section>
-  <ul id="listaEquipos"></ul>
 
+  <!-- REGISTRAR PARTIDO -->
+  <section class="card">
+    <h2>Registrar partido</h2>
+
+    <select id="p_local">
+      <option value="">Equipo local</option>
+    </select>
+
+    <input id="g_local" type="number" placeholder="Goles local">
+
+    <select id="p_visitante">
+      <option value="">Equipo visitante</option>
+    </select>
+
+    <input id="g_visitante" type="number" placeholder="Goles visitante">
+
+    <button onclick="registrarPartido()">Guardar partido</button>
+  </section>
+
+  <!-- ESTADÍSTICAS -->
   <section class="card">
     <h2>Estadísticas</h2>
     <div id="campeon">🏆 Campeón: pendiente</div>
     <div id="goleador">⚽ Goleador: pendiente</div>
-  </section>
-
-  <section class="card">
   </section>
 
 </main>
