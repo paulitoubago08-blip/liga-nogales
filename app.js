@@ -13,7 +13,9 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-// 🔥 CONFIG REAL DE FIREBASE
+// ================================
+// 🔥 CONFIG FIREBASE
+// ================================
 const firebaseConfig = {
   apiKey: "AIzaSyD3p6FuP5cUKrKcl-b2dmdxsVe7U7Ts6ZE",
   authDomain: "liga-nogales-f3da8.firebaseapp.com",
@@ -25,15 +27,22 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-// APP SIN LOGIN (ENTRA DIRECTO)
+
+// ================================
+// APP SIN LOGIN
+// ================================
 document.getElementById("app").classList.remove("hidden");
-// Torneo activo (global)
-// TORNEO FIJO TEMPORAL (SIN LOGIN) 
-let torneoActivoId = "TORNEO_TEST"; 
+
+// Torneo fijo temporal
+const torneoActivoId = "TORNEO_TEST";
+
+// ================================
+// ➕ CREAR EQUIPO
+// ================================
 window.crearEquipo = async function () {
-  const nombre = document.getElementById("eq_nombre").value;
-  const grupo = document.getElementById("eq_grupo").value;
-  const roster = document.getElementById("eq_roster").value;
+  const nombre = document.getElementById("eq_nombre").value.trim();
+  const grupo = document.getElementById("eq_grupo").value.trim();
+  const roster = document.getElementById("eq_roster").value.trim();
 
   if (!nombre || !grupo) {
     alert("Completa nombre y grupo");
@@ -54,9 +63,7 @@ window.crearEquipo = async function () {
       creado: serverTimestamp()
     });
 
-    alert("Equipo agregado correctamente");
-
-    // limpiar campos ✅ AHORA BIEN
+    // limpiar campos
     document.getElementById("eq_nombre").value = "";
     document.getElementById("eq_grupo").value = "";
     document.getElementById("eq_roster").value = "";
@@ -65,26 +72,27 @@ window.crearEquipo = async function () {
     cargarTablaPosiciones();
     cargarSelectEquipos();
 
+    alert("Equipo agregado correctamente ✅");
+
   } catch (error) {
     console.error(error);
-    alert("Error al crear equipo");
+    alert("Error al crear equipo ❌");
   }
 };
 
-  
-
-    
-
-  
-
 // ================================
-// CARGAR EQUIPOS EN PANTALLA
+// 📋 LISTA SIMPLE DE EQUIPOS
 // ================================
 async function cargarEquipos() {
   const lista = document.getElementById("listaEquipos");
   lista.innerHTML = "";
 
- 
+  const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId)
+  );
+
+  const snap = await getDocs(q);
 
   snap.forEach(docu => {
     const e = docu.data();
@@ -93,19 +101,22 @@ async function cargarEquipos() {
     lista.appendChild(li);
   });
 }
-// ===============================
-// 📊 CARGAR TABLA DE POSICIONES
-// ===============================
+
+// ================================
+// 📊 TABLA DE POSICIONES (ORDENADA)
+// ================================
 async function cargarTablaPosiciones() {
   const tabla = document.getElementById("tablaPosiciones");
   tabla.innerHTML = "";
-   const q = query(
+
+  const q = query(
     collection(db, "equipos"),
     where("torneoId", "==", torneoActivoId),
     orderBy("pts", "desc"),
     orderBy("dif", "desc"),
-    orderBy("gf", "desc") 
-    );
+    orderBy("gf", "desc")
+  );
+
   const snap = await getDocs(q);
 
   snap.forEach(docu => {
@@ -114,20 +125,21 @@ async function cargarTablaPosiciones() {
 
     tr.innerHTML = `
       <td>${e.nombre}</td>
-      <td>${e.pj || 0}</td>
-      <td>${e.gf || 0}</td>
-      <td>${e.gc || 0}</td>
-      <td>${(e.gf || 0) - (e.gc || 0)}</td>
-      <td>${e.pts || 0}</td>
+      <td>${e.pj}</td>
+      <td>${e.gf}</td>
+      <td>${e.gc}</td>
+      <td>${e.dif}</td>
+      <td>${e.pts}</td>
     `;
 
     tabla.appendChild(tr);
   });
 }
 
-window.cargarSelectEquipos = async function () {
-  if (!torneoActivoId) return;
-
+// ================================
+// 🔽 SELECT DE EQUIPOS
+// ================================
+async function cargarSelectEquipos() {
   const selectLocal = document.getElementById("p_local");
   const selectVisit = document.getElementById("p_visitante");
 
@@ -148,15 +160,16 @@ window.cargarSelectEquipos = async function () {
     opt1.value = docu.id;
     opt1.textContent = e.nombre;
 
-    const opt2 = document.createElement("option");
-    opt2.value = docu.id;
-    opt2.textContent = e.nombre;
+    const opt2 = opt1.cloneNode(true);
 
     selectLocal.appendChild(opt1);
     selectVisit.appendChild(opt2);
   });
 }
 
+// ================================
+// ⚽ REGISTRAR PARTIDO
+// ================================
 window.registrarPartido = async function () {
   const localId = document.getElementById("p_local").value;
   const visitanteId = document.getElementById("p_visitante").value;
@@ -169,7 +182,7 @@ window.registrarPartido = async function () {
   }
 
   if (localId === visitanteId) {
-    alert("No puede jugar contra sí mismo");
+    alert("Un equipo no puede jugar contra sí mismo");
     return;
   }
 
@@ -182,7 +195,6 @@ window.registrarPartido = async function () {
   const local = localSnap.data();
   const visit = visitSnap.data();
 
-  // puntos
   let ptsLocal = 0;
   let ptsVisit = 0;
 
@@ -210,6 +222,13 @@ window.registrarPartido = async function () {
   });
 
   cargarTablaPosiciones();
- 
+
   alert("Partido registrado ✅");
 };
+
+// ================================
+// ⏱️ CARGA INICIAL
+// ================================
+cargarEquipos();
+cargarTablaPosiciones();
+cargarSelectEquipos();
