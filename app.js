@@ -27,14 +27,9 @@ const db = getFirestore(app);
 // APP SIN LOGIN (ENTRA DIRECTO)
 document.getELementById("app").classList.remove("hidden");
 // Torneo activo (global)
-let torneoActivoId = null;
+// TORNEO FIJO TEMPORAL (SIN LOGIN) 
+let torneoActivoId = "TORNEO_TEST"; 
 
-
-// 🏆 CREAR TORNEO
-if (!torneoActivoId) {
-  alert("Primero crea un torneo");
-  return;
-}
 window.crearTorneo = async function () {
   const nombre = document.getElementById("t_nombre").value;
   const deporte = document.getElementById("t_deporte").value;
