@@ -6,6 +6,7 @@ import {
   serverTimestamp,
   query,
   where,
+  orderBy,
   getDocs,
   updateDoc,
   doc
@@ -114,7 +115,10 @@ async function cargarEquipos() {
 
   const q = query(
     collection(db, "equipos"),
-    where("torneoId", "==", torneoActivoId)
+    where("torneoId", "==", torneoActivoId),
+    orderBy("pts", "desc"),
+    orderBy("dif", "desc"),
+    orderBy("gf", "desc") 
     );
   const snap = await getDocs(q);
 
