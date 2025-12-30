@@ -29,7 +29,7 @@ document.getELementById("app").classList.remove("hidden");
 // Torneo activo (global)
 // TORNEO FIJO TEMPORAL (SIN LOGIN) 
 let torneoActivoId = "TORNEO_TEST"; 
-
+// ================================
 // CREAR EQUIPO
 // ================================
 window.crearEquipo = async function () {
@@ -47,6 +47,7 @@ window.crearEquipo = async function () {
       nombre,
       grupo,
       roster,
+      torneoId: torneoActivoId,
       pj:0,
       gf:0,
       gc:0,
@@ -54,9 +55,18 @@ window.crearEquipo = async function () {
       pts:0,
       creado: serverTimestamp()
     });
+    alert("Equipo agregado correctamente");
+    document.getELementId("eq_nombre").value = "";
+     document.getELementId("eq_grupo").value = "";
+     document.getELementId("eq_roster").value = "";
     cargarEquipos();
     cargarTabla();
-    cargarSelectEquipos();
+
+  } catch (error) {
+    console.error(error);
+    alert("Error al agregar equipo")
+  }
+};
     
 
     // limpiar campos
