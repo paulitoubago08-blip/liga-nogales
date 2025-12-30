@@ -146,7 +146,7 @@ async function cargarTablaPosiciones() {
 // ================================
 // CARGAR SELECT EQUIPOS
 // ================================
-async function cargarSelectEquipos() {
+window.cargarSelectEquipos = async function () {
   const selectLocal = document.getElementById("p_local");
   const selectVisit = document.getElementById("p_visitante");
 
