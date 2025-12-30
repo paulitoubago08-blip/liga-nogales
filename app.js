@@ -29,7 +29,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ================================
-// APP SIN LOGIN
+// APP SIN LOGIN (ENTRA DIRECTO)
 // ================================
 document.getElementById("app").classList.remove("hidden");
 
@@ -63,17 +63,15 @@ window.crearEquipo = async function () {
       creado: serverTimestamp()
     });
 
-    // limpiar campos
     document.getElementById("eq_nombre").value = "";
     document.getElementById("eq_grupo").value = "";
     document.getElementById("eq_roster").value = "";
-    
-   cargarEquipos();
-  cargarTablaPosiciones();
-     cargarSelectEquipos();
+
+    await cargarEquipos();
+    await cargarTablaPosiciones();
+    await cargarSelectEquipos();
 
     alert("Equipo agregado correctamente ✅");
-
   } catch (error) {
     console.error(error);
     alert("Error al crear equipo ❌");
@@ -81,7 +79,7 @@ window.crearEquipo = async function () {
 };
 
 // ================================
-// 📋 LISTA SIMPLE DE EQUIPOS
+// 📋 LISTA DE EQUIPOS
 // ================================
 async function cargarEquipos() {
   const lista = document.getElementById("listaEquipos");
@@ -103,7 +101,7 @@ async function cargarEquipos() {
 }
 
 // ================================
-// 📊 TABLA DE POSICIONES (ORDENADA)
+// 📊 TABLA DE POSICIONES (OFICIAL)
 // ================================
 async function cargarTablaPosiciones() {
   const tabla = document.getElementById("tablaPosiciones");
@@ -119,42 +117,38 @@ async function cargarTablaPosiciones() {
 
   const snap = await getDocs(q);
 
-  let posicion = 1; // 👈 contador de posiciones
+  let pos = 1;
 
   snap.forEach(docu => {
     const e = docu.data();
     const tr = document.createElement("tr");
 
-    // 🎨 colores opcionales
-    if (posicion === 1) tr.style.background = "#d4edda"; // líder
-    if (posicion >= snap.size - 1) tr.style.background = "#f8d7da"; // últimos
-
     tr.innerHTML = `
-      <td><strong>${posicion}</strong></td>
+      <td><strong>${pos}</strong></td>
       <td>${e.nombre}</td>
-      <td>${e.pj || 0}</td>
-      <td>${e.gf || 0}</td>
-      <td>${e.gc || 0}</td>
-      <td>${(e.gf || 0) - (e.gc || 0)}</td>
-      <td><strong>${e.pts || 0}</strong></td>
+      <td>${e.pj}</td>
+      <td>${e.gf}</td>
+      <td>${e.gc}</td>
+      <td>${e.dif}</td>
+      <td><strong>${e.pts}</strong></td>
     `;
 
     tabla.appendChild(tr);
-    posicion++;
+    pos++;
   });
 }
+
 // ================================
-// CARGAR SELECT EQUIPOS
+// 🔽 SELECTS DE PARTIDOS
 // ================================
 window.cargarSelectEquipos = async function () {
-  const selectLocal = document.getElementById("p_local");
-  const selectVisit = document.getElementById("p_visitante");
+  const local = document.getElementById("p_local");
+  const visita = document.getElementById("p_visitante");
 
-  // seguridad por si aún no carga el HTML
-  if (!selectLocal || !selectVisit) return;
+  if (!local || !visita) return;
 
-  selectLocal.innerHTML = `<option value="">Equipo local</option>`;
-  selectVisit.innerHTML = `<option value="">Equipo visitante</option>`;
+  local.innerHTML = `<option value="">Equipo local</option>`;
+  visita.innerHTML = `<option value="">Equipo visitante</option>`;
 
   const q = query(
     collection(db, "equipos"),
@@ -164,50 +158,46 @@ window.cargarSelectEquipos = async function () {
   const snap = await getDocs(q);
 
   snap.forEach(docu => {
-    const equipo = docu.data();
+    const e = docu.data();
 
-    const optLocal = document.createElement("option");
-    optLocal.value = docu.id;
-    optLocal.textContent = equipo.nombre;
+    const opt1 = document.createElement("option");
+    opt1.value = docu.id;
+    opt1.textContent = e.nombre;
 
-    const optVisit = document.createElement("option");
-    optVisit.value = docu.id;
-    optVisit.textContent = equipo.nombre;
+    const opt2 = document.createElement("option");
+    opt2.value = docu.id;
+    opt2.textContent = e.nombre;
 
-    selectLocal.appendChild(optLocal);
-    selectVisit.appendChild(optVisit);
+    local.appendChild(opt1);
+    visita.appendChild(opt2);
   });
-}
+};
+
 // ================================
 // ⚽ REGISTRAR PARTIDO
 // ================================
 window.registrarPartido = async function () {
   try {
     const localId = document.getElementById("p_local").value;
-    const visitanteId = document.getElementById("p_visitante").value;
+    const visitId = document.getElementById("p_visitante").value;
     const gLocal = Number(document.getElementById("g_local").value);
     const gVisit = Number(document.getElementById("g_visitante").value);
 
-    if (!localId || !visitanteId || isNaN(gLocal) || isNaN(gVisit)) {
+    if (!localId || !visitId || isNaN(gLocal) || isNaN(gVisit)) {
       alert("Completa todos los datos");
       return;
     }
 
-    if (localId === visitanteId) {
+    if (localId === visitId) {
       alert("Un equipo no puede jugar contra sí mismo");
       return;
     }
 
     const refLocal = doc(db, "equipos", localId);
-    const refVisit = doc(db, "equipos", visitanteId);
+    const refVisit = doc(db, "equipos", visitId);
 
     const localSnap = await getDoc(refLocal);
     const visitSnap = await getDoc(refVisit);
-
-    if (!localSnap.exists() || !visitSnap.exists()) {
-      alert("Equipo no encontrado en base de datos");
-      return;
-    }
 
     const local = localSnap.data();
     const visit = visitSnap.data();
@@ -223,19 +213,19 @@ window.registrarPartido = async function () {
     }
 
     await updateDoc(refLocal, {
-      pj: (local.pj || 0) + 1,
-      gf: (local.gf || 0) + gLocal,
-      gc: (local.gc || 0) + gVisit,
-      dif: ((local.gf || 0) + gLocal) - ((local.gc || 0) + gVisit),
-      pts: (local.pts || 0) + ptsLocal
+      pj: local.pj + 1,
+      gf: local.gf + gLocal,
+      gc: local.gc + gVisit,
+      dif: (local.gf + gLocal) - (local.gc + gVisit),
+      pts: local.pts + ptsLocal
     });
 
     await updateDoc(refVisit, {
-      pj: (visit.pj || 0) + 1,
-      gf: (visit.gf || 0) + gVisit,
-      gc: (visit.gc || 0) + gLocal,
-      dif: ((visit.gf || 0) + gVisit) - ((visit.gc || 0) + gLocal),
-      pts: (visit.pts || 0) + ptsVisit
+      pj: visit.pj + 1,
+      gf: visit.gf + gVisit,
+      gc: visit.gc + gLocal,
+      dif: (visit.gf + gVisit) - (visit.gc + gLocal),
+      pts: visit.pts + ptsVisit
     });
 
     document.getElementById("g_local").value = "";
@@ -244,32 +234,17 @@ window.registrarPartido = async function () {
     await cargarTablaPosiciones();
 
     alert("Partido registrado ✅");
-
   } catch (error) {
-    console.error("ERROR REAL:", error);
-    alert(error.message);
+    console.error(error);
+    alert("Error al registrar partido ❌");
   }
-};
-// RECARGAR TODO
-  await cargarEquipos();
-  await cargarTablaPosiciones();
-  await cargarselectEquipos();
-//limpiar inputs
-  document.getElementById("g_local").value = "";
-  document.getElementById("g_visitante").value = "";
-  alert("Partido registrado ✅");
-} catch (error) {
-  console.error ("ERROR REGISTRAR PARTIDO:", error);
-  alert("error.message");
-}
 };
 
 // ================================
 // ⏱️ CARGA INICIAL
 // ================================
 document.addEventListener("DOMContentLoaded", async () => {
-await cargarEquipos();
-await cargarTablaPosiciones();
-await cargarSelectEquipos();
+  await cargarEquipos();
+  await cargarTablaPosiciones();
+  await cargarSelectEquipos();
 });
-  
