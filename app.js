@@ -220,19 +220,19 @@ if (!localSnap.exits() || !visitSnap.exists()) {
   }
 
   await updateDoc(refLocal, {
-    pj: local.pj + 1,
-    gf: local.gf + gLocal,
-    gc: local.gc + gVisit,
-    dif: (local.gf + gLocal) - (local.gc + gVisit),
-    pts: local.pts + ptsLocal
+    pj: (local.pj || 0) + 1,
+    gf: (local.gf || 0) + gLocal,
+    gc: (local.gc || 0) + gVisit,
+    dif: ((local.gf || 0) + gLocal) - ((local.gc || 0) + gVisit),
+    pts: (local.pts || 0) + ptsLocal
   });
 
   await updateDoc(refVisit, {
-    pj: visit.pj + 1,
-    gf: visit.gf + gVisit,
-    gc: visit.gc + gLocal,
-    dif: (visit.gf + gVisit) - (visit.gc + gLocal),
-    pts: visit.pts + ptsVisit
+    pj: (visit.pj || 0) + 1,
+    gf: (visit.gf || 0) + gVisit,
+    gc: (visit.gc || 0) + gLocal,
+    dif: ((visit.gf || 0) + gVisit) - ((visit.gc || 0) + gLocal),
+    pts: (visit.pts || 0) + ptsVisit
   });
 // RECARGAR TODO
   await cargarEquipos();
@@ -243,8 +243,8 @@ if (!localSnap.exits() || !visitSnap.exists()) {
   document.getElementById("g_visitante").value = "";
   alert("Partido registrado ✅");
 } catch (error) {
-  console.error(error);
-  alert("Error al registrar partido");
+  console.error ("ERROR REGISTRAR PARTIDO:", error);
+  alert("error.message");
 }
 };
 
