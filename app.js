@@ -144,6 +144,41 @@ async function cargarTablaPosiciones() {
   });
 }
 // ================================
+// CARGAR SELECT EQUIPOS
+// ================================
+async function cargarSelectEquipos() {
+  const selectLocal = document.getElementById("p_local");
+  const selectVisit = document.getElementById("p_visitante");
+
+  // seguridad por si aún no carga el HTML
+  if (!selectLocal || !selectVisit) return;
+
+  selectLocal.innerHTML = `<option value="">Equipo local</option>`;
+  selectVisit.innerHTML = `<option value="">Equipo visitante</option>`;
+
+  const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId)
+  );
+
+  const snap = await getDocs(q);
+
+  snap.forEach(docu => {
+    const equipo = docu.data();
+
+    const optLocal = document.createElement("option");
+    optLocal.value = docu.id;
+    optLocal.textContent = equipo.nombre;
+
+    const optVisit = document.createElement("option");
+    optVisit.value = docu.id;
+    optVisit.textContent = equipo.nombre;
+
+    selectLocal.appendChild(optLocal);
+    selectVisit.appendChild(optVisit);
+  });
+}
+// ================================
 // ⚽ REGISTRAR PARTIDO
 // ================================
 window.registrarPartido = async function () {
