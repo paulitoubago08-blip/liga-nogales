@@ -161,13 +161,16 @@ window.registrarPartido = async function () {
     alert("Un equipo no puede jugar contra sí mismo");
     return;
   }
-
+try {
   const refLocal = doc(db, "equipos", localId);
   const refVisit = doc(db, "equipos", visitanteId);
 
   const localSnap = await getDoc(refLocal);
   const visitSnap = await getDoc(refVisit);
-
+if (!localSnap.exits() || !visitSnap.exists()) {
+  alert("equipo no encntrado");
+  return;
+}
   const local = localSnap.data();
   const visit = visitSnap.data();
 
@@ -196,16 +199,24 @@ window.registrarPartido = async function () {
     dif: (visit.gf + gVisit) - (visit.gc + gLocal),
     pts: visit.pts + ptsVisit
   });
-
-  cargarTablaPosiciones();
-
+// RECARGAR TODO
+  await cargarEquipos();
+  await cargarTablaPosiciones();
+  await cargarselectEquipos();
+//limpiar inputs
+  document.getElementById("g_local").value = "";
+  document.getElementById("g_visitante").value = "";
   alert("Partido registrado ✅");
+} catch (error) {
+  console.error(error);
+  alert("Error al registrar partido");
+}
 };
 
 // ================================
 // ⏱️ CARGA INICIAL
 // ================================
-documente.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
 await cargarEquipos();
 await cargarTablaPosiciones();
 await cargarSelectEquipos();
