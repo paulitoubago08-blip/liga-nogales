@@ -125,7 +125,7 @@ async function cargarTablaPosiciones() {
   });
 }
 
-async function cargarSelectEquipos () {
+window.cargarSelectEquipos = async function () {
   if (!torneoActivoId) return;
 
   const selectLocal = document.getElementById("p_local");
