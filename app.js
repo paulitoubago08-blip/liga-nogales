@@ -25,7 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 // APP SIN LOGIN (ENTRA DIRECTO)
-document.getELementById("app").classList.remove("hidden");
+document.getElementById("app").classList.remove("hidden");
 // Torneo activo (global)
 // TORNEO FIJO TEMPORAL (SIN LOGIN) 
 let torneoActivoId = "TORNEO_TEST"; 
@@ -154,6 +154,38 @@ async function cargarTablaPosiciones() {
     tbody.appendChild(tr);
   });
 }
+window.cargarSelectEquipos = async function () {
+  if (!torneoActivoId) return;
+
+  const selectLocal = document.getElementById("p_local");
+  const selectVisit = document.getElementById("p_visitante");
+
+  selectLocal.innerHTML = `<option value="">Equipo local</option>`;
+  selectVisit.innerHTML = `<option value="">Equipo visitante</option>`;
+
+  const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId)
+  );
+
+  const snap = await getDocs(q);
+
+  snap.forEach(docu => {
+    const e = docu.data();
+
+    const opt1 = document.createElement("option");
+    opt1.value = docu.id;
+    opt1.textContent = e.nombre;
+
+    const opt2 = document.createElement("option");
+    opt2.value = docu.id;
+    opt2.textContent = e.nombre;
+
+    selectLocal.appendChild(opt1);
+    selectVisit.appendChild(opt2);
+  });
+}
+
 window.registrarPartido = async function () {
   const localId = document.getElementById("p_local").value;
   const visitanteId = document.getElementById("p_visitante").value;
@@ -207,37 +239,6 @@ window.registrarPartido = async function () {
   });
 
   cargarTabla();
-  async function cargarSelectEquipos() {
-  if (!torneoActivoId) return;
-
-  const selectLocal = document.getElementById("p_local");
-  const selectVisit = document.getElementById("p_visitante");
-
-  selectLocal.innerHTML = `<option value="">Equipo local</option>`;
-  selectVisit.innerHTML = `<option value="">Equipo visitante</option>`;
-
-  const q = query(
-    collection(db, "equipos"),
-    where("torneoId", "==", torneoActivoId)
-  );
-
-  const snap = await getDocs(q);
-
-  snap.forEach(docu => {
-    const e = docu.data();
-
-    const opt1 = document.createElement("option");
-    opt1.value = docu.id;
-    opt1.textContent = e.nombre;
-
-    const opt2 = document.createElement("option");
-    opt2.value = docu.id;
-    opt2.textContent = e.nombre;
-
-    selectLocal.appendChild(opt1);
-    selectVisit.appendChild(opt2);
-  });
-}
-
+ 
   alert("Partido registrado ✅");
 };
