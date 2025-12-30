@@ -8,7 +8,7 @@ import {
   where,
   orderBy,
   getDocs,
-  getdoc,
+  getDoc,
   updateDoc,
   doc
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
@@ -84,14 +84,7 @@ async function cargarEquipos() {
   const lista = document.getElementById("listaEquipos");
   lista.innerHTML = "";
 
-  const q = query(
-    collection(db, "equipos"),
-    where("torneoId", "==", torneoActivoId),
-    orderBy("pts", "desc"),
-    orderBy("dif", "desc"),
-    orderBy("gf", "desc") 
-    );
-  const snap = await getDocs(q);
+ 
 
   snap.forEach(docu => {
     const e = docu.data();
@@ -106,13 +99,17 @@ async function cargarEquipos() {
 async function cargarTabla() {
   const tabla = document.getElementById("tablaPosiciones");
   tabla.innerHTML = "";
-
-  const q = query(collection(db, "equipos"));
+   const q = query(
+    collection(db, "equipos"),
+    where("torneoId", "==", torneoActivoId),
+    orderBy("pts", "desc"),
+    orderBy("dif", "desc"),
+    orderBy("gf", "desc") 
+    );
   const snap = await getDocs(q);
 
   snap.forEach(docu => {
     const e = docu.data();
-
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
