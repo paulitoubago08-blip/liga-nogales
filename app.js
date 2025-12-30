@@ -47,7 +47,6 @@ window.crearEquipo = async function () {
       nombre,
       grupo,
       roster,
-      torneoId: torneoActivoId,
       pj:0,
       gf:0,
       gc:0,
@@ -122,8 +121,7 @@ async function cargarTabla() {
   });
 }
 async function cargarTablaPosiciones() {
-  if (!torneoActivoId) return;
-
+  
   const tbody = document.getElementById("tablaPosiciones");
   tbody.innerHTML = "";
 
